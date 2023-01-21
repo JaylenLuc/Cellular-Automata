@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-const std::int32_t window_width = 1000; //columns
+const std::int32_t window_width = 960; //columns
 
 const std::int32_t window_height = 800; //rows
 

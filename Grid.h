@@ -4,6 +4,7 @@
 #include <vector>
 #include "Cells.h"
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
 
 
 class Grid{
@@ -21,7 +22,10 @@ class Grid{
 
 
     public:
-        std::vector<std::vector<Cells>> the_grid;
+        std::vector<sf::Vertex> the_grid;
+        //iterate over the cell height first
+
+        //then for every "height " you iterate through the width so as to avoid a 2D vector 
         Grid(int Height, int Width);
 
         void setWidth(int Width);
@@ -63,19 +67,54 @@ void Grid::exec(int w_width, int w_height)
     //if dead and has exaclty 3 cells around it then it will become alive
     // create the window
     
+
     sf::RenderWindow window(sf::VideoMode(w_width, w_height), "Cellular Automata!");
     sf::View view = window.getDefaultView();
-
+    //the_grid((window.getSize().x / Cells::QUAD_SIZE)* (window.getSize().y /Cells::QUAD_SIZE));
     
-    for (int i = 0; i < height; i++){
-        std::vector<Cells> row_vec;
-        for (int y = 0; y < width; y++){
+    const int WIDTH = window.getSize().x / Cells::QUAD_SIZE;
+    srand(std::time(nullptr));
+    //std::vector<sf::Vertex>> the_grid;
+    for (unsigned int x = 0; x < window.getSize().x /Cells::QUAD_SIZE; x++){
+        for (unsigned int y = 0 ; y < window.getSize().y/ Cells::QUAD_SIZE; y++){
+            sf::Vertex t_left;
+            sf::Vertex t_right;
+            sf::Vertex b_right;
+            sf::Vertex b_left;
 
-            row_vec.push_back(*new Cells(y,i,Cells::LIVING));//LINKER ERROR HERE
+            float pixel_x = x * Cells::QUAD_SIZE;
+
+            float pixel_y = y * Cells::QUAD_SIZE;
+            //Vector2 (T X, T Y)
+            t_left.position = {pixel_x, pixel_y};
+
+            t_right.position = {pixel_x + WIDTH, pixel_y};
+
+            b_right.position = {pixel_x + WIDTH, pixel_y + WIDTH};
+             
+            b_left.position = {pixel_x, pixel_y + WIDTH};
+
+            
+            uint8_t r = rand() % 255;
+
+
+            t_left.color = {r,r,r};
+            t_right.color = {r,r,r};
+            b_left.color = {r,r,r};
+            b_right.color = {r,r,r};
+
+            the_grid.push_back(t_left);
+            the_grid.push_back(b_left);
+            the_grid.push_back(b_right);
+            the_grid.push_back(t_right);
+            
+
+
+
+
         }
-        the_grid.push_back(row_vec);
+        
     }
-
 
 
 
@@ -102,13 +141,9 @@ void Grid::exec(int w_width, int w_height)
 
         // clear the window with orange color
         window.clear();
-        for (std::vector<Cells> & i : the_grid){
-            for (Cells & y : i){
-                
-                window.draw(y.cell_shape);
-            }
-        }
 
+        window.draw(the_grid.data(), the_grid.size(), sf::Quads);
+    
         window.display();
     }
 

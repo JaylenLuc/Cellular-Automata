@@ -11,6 +11,8 @@ class Cells {
 
     public:
 
+        static const int16_t QUAD_SIZE = 4;
+
         sf::RectangleShape cell_shape;
 
         enum States {
