@@ -67,24 +67,25 @@ void Grid::exec(int w_width, int w_height)
     //if dead and has exaclty 3 cells around it then it will become alive
     // create the window
     
-
+    //Cells::setQUAD_SIZE(4);
+    Cells::getQUAD_SIZE();
     sf::RenderWindow window(sf::VideoMode(w_width, w_height), "Cellular Automata!");
-    sf::View view = window.getDefaultView();
-    //the_grid((window.getSize().x / Cells::QUAD_SIZE)* (window.getSize().y /Cells::QUAD_SIZE));
     
-    const int WIDTH = window.getSize().x / Cells::QUAD_SIZE;
+    //the_grid((window.getSize().x / Cells::getQUAD_SIZE())* (window.getSize().y /Cells::getQUAD_SIZE()));
+    
+    const int WIDTH = window.getSize().x / Cells::getQUAD_SIZE();
     srand(std::time(nullptr));
     //std::vector<sf::Vertex>> the_grid;
-    for (unsigned int x = 0; x < window.getSize().x /Cells::QUAD_SIZE; x++){
-        for (unsigned int y = 0 ; y < window.getSize().y/ Cells::QUAD_SIZE; y++){
+    for (unsigned int x = 0; x < window.getSize().x /Cells::getQUAD_SIZE(); x++){
+        for (unsigned int y = 0 ; y < window.getSize().y/ Cells::getQUAD_SIZE(); y++){
             sf::Vertex t_left;
             sf::Vertex t_right;
             sf::Vertex b_right;
             sf::Vertex b_left;
 
-            float pixel_x = x * Cells::QUAD_SIZE;
+            float pixel_x = x * Cells::getQUAD_SIZE();
 
-            float pixel_y = y * Cells::QUAD_SIZE;
+            float pixel_y = y * Cells::getQUAD_SIZE();
             //Vector2 (T X, T Y)
             t_left.position = {pixel_x, pixel_y};
 
@@ -126,16 +127,9 @@ void Grid::exec(int w_width, int w_height)
         while (window.pollEvent(event))
         {
             // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
                 window.close();
 
-            else if (event.type == sf::Event::Resized) {
-            // resize my view
-            view.setSize({
-                    static_cast<float>(event.size.width),
-                    static_cast<float>(event.size.height)
-            });
-            window.setView(view);
             }
         }
 

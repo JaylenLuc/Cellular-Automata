@@ -11,9 +11,7 @@ class Cells {
 
     public:
 
-        static const int16_t QUAD_SIZE = 4;
-
-        sf::RectangleShape cell_shape;
+        static int16_t QUAD_SIZE;
 
         enum States {
 
@@ -26,11 +24,14 @@ class Cells {
 
         States getState();
 
-        int getY() const;
+        static int16_t getQUAD_SIZE(){
+            return QUAD_SIZE;
+        }
 
-        int getX() const ;
+        static void setQUAD_SIZE(int16_t x){
 
-        void setPos(int x, int y);
+            QUAD_SIZE = x;
+        }
     private:
 
         int xPos;
@@ -44,22 +45,13 @@ class Cells {
 
 };
 
+int16_t Cells::QUAD_SIZE = 8;
+
+
+
+
 Cells::Cells(int xpos, int ypos, States curr_state){
     //problem found maybe
-    xPos = xpos;
-
-    yPos = ypos;
-
-
-    current_cell_state = curr_state;
-
-    cell_shape = sf::RectangleShape(sf::Vector2f(10,10)) ;
-
-    cell_shape.setFillColor(sf::Color::Green);
-
-    cell_shape.setOutlineColor(sf::Color::Black);
-    
-    cell_shape.setPosition(xpos,ypos);
 
 
 }
@@ -67,24 +59,6 @@ Cells::Cells(int xpos, int ypos, States curr_state){
 Cells::States Cells::getState(){
     return current_cell_state;
 }
-
-int Cells::getY() const{
-    return yPos;
-}
-
-int Cells::getX() const {
-    return xPos;
-}
-
-
-void Cells::setPos(int x, int y){
-    xPos = x;
-
-    yPos = y;
-
-    cell_shape.setPosition(x,y);
-}
-
 
 
 
