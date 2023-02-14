@@ -10,15 +10,14 @@
 class Cells {
 
     public:
-
-        static int16_t QUAD_SIZE;
-
         enum States {
 
-            LIVING,
-            DEAD
+        LIVING,
+        DEAD
 
         };
+
+        static int16_t QUAD_SIZE;
 
         Cells(int xpos, int ypos, States curr_state);
 

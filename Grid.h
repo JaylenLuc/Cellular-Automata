@@ -99,7 +99,7 @@ void Grid::exec(int w_width, int w_height)
             uint8_t r = rand() % 255;
 
 
-            t_left.color = {r,r,r};
+            t_left.color = {r,r,r}; 
             t_right.color = {r,r,r};
             b_left.color = {r,r,r};
             b_right.color = {r,r,r};
