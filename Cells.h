@@ -12,16 +12,18 @@ class Cells {
     public:
         enum States {
 
-        LIVING,
-        DEAD
+            LIVING,
+            DEAD
 
         };
 
         static int16_t QUAD_SIZE;
 
-        Cells(int xpos, int ypos, States curr_state);
+        Cells(sf::Vertex & t_left, sf::Vertex & b_left,sf::Vertex & b_right,sf::Vertex & t_right, int i);
 
-        States getState();
+        bool getState();
+
+        void setState(bool b );
 
         static int16_t getQUAD_SIZE(){
             return QUAD_SIZE;
@@ -31,7 +33,14 @@ class Cells {
 
             QUAD_SIZE = x;
         }
+
+        sf::Vertex  t_left;
+
+        sf::Vertex  b_left;
+        sf::Vertex  b_right;
+        sf::Vertex  t_right;
     private:
+
 
         int xPos;
 
@@ -49,16 +58,48 @@ int16_t Cells::QUAD_SIZE = 8;
 
 
 
-Cells::Cells(int xpos, int ypos, States curr_state){
-    //problem found maybe
+Cells::Cells(sf::Vertex & t_left, sf::Vertex & b_left,sf::Vertex & b_right,sf::Vertex & t_right, int i){
+    
+    t_left = t_left;
 
+    b_left = b_left;
+
+    b_right = b_right;
+
+    t_right = t_right;
+    if (i == 0){
+        current_cell_state = DEAD;
+
+    }else{
+        current_cell_state = LIVING;
+    }
 
 }
 
-Cells::States Cells::getState(){
-    return current_cell_state;
+bool Cells::getState(){
+    if (current_cell_state == LIVING){
+        return true;
+    }
+    return false;
+    //return current_cell_state;
 }
 
+void Cells::setState(bool b){
+
+    if (b){
+        current_cell_state = LIVING;
+        t_left.color = {225,225,225}; 
+        t_right.color = {225,225,225};
+        b_left.color = {225,225,225};
+        b_right.color = {225,225,225};
+    }else{
+        current_cell_state = DEAD;
+        t_left.color = {0,0,0}; 
+        t_right.color = {0,0,0}; 
+        b_left.color = {0,0,0}; 
+        b_right.color = {0,0,0}; 
+    }
+}
 
 
 #endif

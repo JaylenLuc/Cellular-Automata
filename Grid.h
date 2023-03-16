@@ -5,6 +5,9 @@
 #include "Cells.h"
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
+#include <set>
+#include <map>
+#include <iostream>
 
 
 class Grid{
@@ -25,9 +28,14 @@ class Grid{
         std::vector<sf::Vertex> the_grid;
         //iterate over the cell height first
 
+        std::vector<std::vector<Cells>> the_cells;
+        const std::int32_t window_width = 720; //columns
+
+        const std::int32_t window_height = 480; //rows
+
         //then for every "height " you iterate through the width so as to avoid a 2D vector 
         Grid(int Height, int Width);
-
+        void update();
         void setWidth(int Width);
 
         void setHeight(int Height);
@@ -58,6 +66,85 @@ void Grid::setRun(bool x){
     is_running = x;
 }
 
+void Grid::update(){
+
+    //totalistic moore neighborhood look up
+    //living 
+    //if 1 or less neighbors are dead then it dies 
+    //2 or 3 then alive cell will live
+    //4 or more then cell will die
+
+    //dead
+    //exactly 3 lviing then it will live
+    int total = 0;
+    //iterates every col then every row in the col
+    // std::cout << the_cells.size()<<std::endl;
+    
+    // std::cout << the_cells[0].size() << std::endl;
+    // std::cout << window.getSize().x/Cells::getQUAD_SIZE() << std::endl;
+    // std::cout << window.getSize().y/Cells::getQUAD_SIZE() << std::endl;
+
+    //cols are 90
+    //rows are 60
+    int width = window_width/Cells::getQUAD_SIZE();
+    int height = window_height/Cells::getQUAD_SIZE();
+    for (int x= 0 ; x < width; x++){
+        for (int y = 0 ; y < height; y++){
+            total = 0;
+            //dead cases
+            if (!the_cells[x][y].getState()){
+                //check left
+                if (x > 0  && the_cells[x-1][y].getState()){
+                    total ++;
+                }
+                //check NW
+                //std::cout << x << "  ----  "<< y << std::endl;
+                if (x > 0 && y > 0 && the_cells[x-1][y-1].getState()){
+                    total ++;
+                }
+                // //check up 
+                if (y > 0 && the_cells[x][y-1].getState()){
+                    total++;
+                }
+                // //check NE
+                if (y >0 && x < width -1 && the_cells[x+1][y-1].getState()){
+                    total++;
+                }
+                if (total > 3){
+                    break;
+                }
+                // //check right
+                if (x < width -1 && the_cells[x+1][y].getState()){
+                    total ++;
+                }
+                // //check SE
+                //logic may be wrong
+                if (y < height-1  && x < width-1 && the_cells[x+1][y+1].getState()){
+                    total ++;
+                }
+                // //check south
+                if (y < height-1 && the_cells[x][y+1].getState()){
+                    total ++;
+                }
+                // //check SW
+                if (y < height -1 && x > 0 && the_cells[x-1][y+1].getState()){
+                    total++;
+
+                }
+                //this wrong wtf
+                if (total == 3){
+                    the_cells[x][y].setState(true);
+
+                }
+
+                
+            }
+
+        }
+    }
+
+}
+
 void Grid::exec(int w_width, int w_height)
 {
     // totalistic cellular automata with a Moore neighborhood
@@ -76,7 +163,12 @@ void Grid::exec(int w_width, int w_height)
     const int WIDTH = window.getSize().x / Cells::getQUAD_SIZE();
     srand(std::time(nullptr));
     //std::vector<sf::Vertex>> the_grid;
+    //for every col for every item in teh col
+    //std::cout << window.getSize().x << std::endl;
     for (unsigned int x = 0; x < window.getSize().x /Cells::getQUAD_SIZE(); x++){
+        std::vector<Cells> v;
+        //every vector in the_cells is a col ;
+        the_cells.push_back(v);
         for (unsigned int y = 0 ; y < window.getSize().y/ Cells::getQUAD_SIZE(); y++){
             sf::Vertex t_left;
             sf::Vertex t_right;
@@ -96,13 +188,22 @@ void Grid::exec(int w_width, int w_height)
             b_left.position = {pixel_x, pixel_y + WIDTH};
 
             
-            uint8_t r = rand() % 255;
+            uint8_t r  = rand() % 255;
+            //if ()
 
-
+            if (r % 2 == 0){
+                r = 225;
+            }else{
+                r = 0;
+            }
             t_left.color = {r,r,r}; 
             t_right.color = {r,r,r};
             b_left.color = {r,r,r};
             b_right.color = {r,r,r};
+            
+
+
+            the_cells[x].push_back(Cells(t_left, b_left, b_right, t_right, r));
 
             the_grid.push_back(t_left);
             the_grid.push_back(b_left);
@@ -133,8 +234,14 @@ void Grid::exec(int w_width, int w_height)
             }
         }
 
-        // clear the window with orange color
+        //std::cout << "here"<<std::endl;
         window.clear();
+
+        update();
+
+        //we might also have to update grid data 
+
+        //just make stuff  happen on the screen bruh
 
         window.draw(the_grid.data(), the_grid.size(), sf::Quads);
     

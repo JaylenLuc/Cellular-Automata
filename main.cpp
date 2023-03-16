@@ -3,9 +3,10 @@
 #include <vector>
 #include <iostream>
 
-const std::int32_t window_width = 1280; //columns
 
-const std::int32_t window_height = 720; //rows
+const std::int32_t window_width = 720; //columns
+
+const std::int32_t window_height = 480; //rows
 
 int main()
 {
@@ -19,3 +20,5 @@ int main()
 
     return 0;
 }
+
+
