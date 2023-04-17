@@ -16,7 +16,7 @@ int main()
 
     std::cout << "Emergent Phenomon Simulation Running" << std::endl;
 
-    cell_main.exec(window_width,window_height);
+    cell_main.exec();
 
     return 0;
 }

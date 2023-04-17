@@ -10,6 +10,7 @@
 #include <iostream>
 
 
+
 class Grid{
 
     private:
@@ -25,13 +26,14 @@ class Grid{
 
 
     public:
+    
         std::vector<sf::Vertex> the_grid;
         //iterate over the cell height first
 
         std::vector<std::vector<Cells>> the_cells;
-        const std::int32_t window_width = 720; //columns
+        static const std::int32_t window_width = 720; //columns
 
-        const std::int32_t window_height = 480; //rows
+        static const std::int32_t window_height = 480; //rows
 
         //then for every "height " you iterate through the width so as to avoid a 2D vector 
         Grid(int Height, int Width);
@@ -44,14 +46,16 @@ class Grid{
 
         void setRun(bool x);
 
-        void exec(int w_width, int w_height);
+        void exec();
+
+        void populate(const int WIDTH);
 
 
 
 
 
 };
-
+sf::RenderWindow window(sf::VideoMode(Grid::window_width, Grid::window_height), "Cellular Automata!");
 Grid::Grid(int Height, int Width){
 
     height = Height;
@@ -67,12 +71,6 @@ void Grid::setRun(bool x){
 }
 
 void Grid::update(){
-
-    //totalistic moore neighborhood look up
-    //living 
-    //if 1 or less neighbors are dead then it dies 
-    //2 or 3 then alive cell will live
-    //4 or more then cell will die
 
     //dead
     //exactly 3 lviing then it will live
@@ -92,6 +90,7 @@ void Grid::update(){
         for (int y = 0 ; y < height; y++){
             total = 0;
             //dead cases
+            //false is dead
             if (!the_cells[x][y].getState()){
                 //check left
                 if (x > 0  && the_cells[x-1][y].getState()){
@@ -131,40 +130,30 @@ void Grid::update(){
                     total++;
 
                 }
-                //this wrong wtf
+                //this if total moore neighbors are equal to 3 then dead cell will live
                 if (total == 3){
                     the_cells[x][y].setState(true);
 
                 }
+                
 
                 
+            }else{
+                //check left
             }
+            //alive cases
+            //totalistic moore neighborhood look up
+            //living 
+            //if 1 or less neighbors are dead then it dies 
+            //2 or 3 then alive cell will live
+            //4 or more then cell will die
 
         }
     }
 
 }
 
-void Grid::exec(int w_width, int w_height)
-{
-    // totalistic cellular automata with a Moore neighborhood
-    //less than 2 living cells then the cell will die
-    //2 or 3surroudning cells it will live
-    //4 or more then it will die
-    //if dead and has exaclty 3 cells around it then it will become alive
-    // create the window
-    
-    //Cells::setQUAD_SIZE(4);
-    Cells::getQUAD_SIZE();
-    sf::RenderWindow window(sf::VideoMode(w_width, w_height), "Cellular Automata!");
-    
-    //the_grid((window.getSize().x / Cells::getQUAD_SIZE())* (window.getSize().y /Cells::getQUAD_SIZE()));
-    
-    const int WIDTH = window.getSize().x / Cells::getQUAD_SIZE();
-    srand(std::time(nullptr));
-    //std::vector<sf::Vertex>> the_grid;
-    //for every col for every item in teh col
-    //std::cout << window.getSize().x << std::endl;
+void Grid::populate(const int WIDTH){
     for (unsigned int x = 0; x < window.getSize().x /Cells::getQUAD_SIZE(); x++){
         std::vector<Cells> v;
         //every vector in the_cells is a col ;
@@ -217,6 +206,28 @@ void Grid::exec(int w_width, int w_height)
         }
         
     }
+}
+
+void Grid::exec()
+{
+    // totalistic cellular automata with a Moore neighborhood
+    //less than 2 living cells then the cell will die
+    //2 or 3surroudning cells it will live
+    //4 or more then it will die
+    //if dead and has exaclty 3 cells around it then it will become alive
+    // create the window
+    
+    //Cells::setQUAD_SIZE(4);
+    Cells::getQUAD_SIZE();
+    
+    //the_grid((window.getSize().x / Cells::getQUAD_SIZE())* (window.getSize().y /Cells::getQUAD_SIZE()));
+    
+    const int WIDTH = window.getSize().x / Cells::getQUAD_SIZE();
+    srand(std::time(nullptr));
+    //std::vector<sf::Vertex>> the_grid;
+    //for every col for every item in teh col
+    //std::cout << window.getSize().x << std::endl;
+    populate(WIDTH);
 
 
 
@@ -235,9 +246,12 @@ void Grid::exec(int w_width, int w_height)
         }
 
         //std::cout << "here"<<std::endl;
-        window.clear();
+        
 
         update();
+
+        window.clear();
+        populate(WIDTH);
 
         //we might also have to update grid data 
 
