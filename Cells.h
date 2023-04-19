@@ -3,6 +3,7 @@
 #define cells
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 // void grid(sf::RenderWindow& window, int rows, int col);
 
@@ -22,6 +23,8 @@ class Cells {
         Cells(sf::Vertex & t_left, sf::Vertex & b_left,sf::Vertex & b_right,sf::Vertex & t_right, int i);
 
         bool getState();
+
+        void test();
 
         void setState(bool b );
 
@@ -101,5 +104,7 @@ void Cells::setState(bool b){
     }
 }
 
-
+void Cells::test (){
+    std::cout << "exists"<< std::endl;
+}
 #endif

@@ -50,6 +50,8 @@ class Grid{
 
         void populate(const int WIDTH);
 
+        void pop_grid(const int WIDTH);
+
 
 
 
@@ -208,6 +210,30 @@ void Grid::populate(const int WIDTH){
     }
 }
 
+void Grid::pop_grid(const int WIDTH){
+    //the_grid.clear();
+    for (unsigned int x = 0; x < the_cells.size(); x++){
+        //std::vector<Cells> v;
+        //every vector in the_cells is a col ;
+        //the_grid.push_back(v);
+        for (unsigned int y = 0 ; y <the_cells[x].size(); y++){
+            
+
+            the_grid.push_back(the_cells[x][y].t_left);
+            the_grid.push_back(the_cells[x][y].b_left);
+            the_grid.push_back(the_cells[x][y].b_right);
+            the_grid.push_back(the_cells[x][y].t_right);
+            
+            //the_cells[x][y].test();
+            //std::cout << x<< " "<< y << std::endl;
+
+
+
+        }
+        
+    }
+}
+
 void Grid::exec()
 {
     // totalistic cellular automata with a Moore neighborhood
@@ -250,8 +276,10 @@ void Grid::exec()
 
         update();
 
-        window.clear();
-        populate(WIDTH);
+        
+        pop_grid(WIDTH);
+        // std::cout << "-"<<std::endl;
+        // std::cout << "---"<<std::endl;
 
         //we might also have to update grid data 
 
