@@ -10,6 +10,10 @@ const std::int32_t window_height = 480; //rows
 
 int main()
 {
+    //1 -- should add the option to allow the users to change the rule set
+    //to a predetermiuned set of rules
+    //2 -- could allow users to change color of alive and dead cells
+    
     Grid cell_main(window_width,window_height);
 
     cell_main.setRun(true);

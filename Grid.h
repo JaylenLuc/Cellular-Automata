@@ -357,8 +357,7 @@ void Grid::exec()
         pop_grid(WIDTH);
         //std::cout << the_grid.size() << std::endl;
         window.draw(the_grid.data(), the_grid.size(), sf::Quads);
-        //std::cout << the_grid.size() << std::endl;
-    
+ 
         window.display();
         //sleep(1);
         usleep(50000);
