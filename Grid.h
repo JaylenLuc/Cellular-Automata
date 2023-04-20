@@ -8,6 +8,7 @@
 #include <set>
 #include <map>
 #include <iostream>
+
 //#include <windows.h>
  
 // Library effective with Linux
@@ -266,7 +267,7 @@ void Grid::populate(const int WIDTH){
 }
 
 void Grid::pop_grid(const int WIDTH){
-    //the_grid.clear();
+    the_grid.clear();
     for (unsigned int x = 0; x < the_cells.size(); x++){
         //std::vector<Cells> v;
         //every vector in the_cells is a col ;
@@ -360,6 +361,7 @@ void Grid::exec()
     
         window.display();
         //sleep(1);
+        usleep(50000);
     }
 
 }
