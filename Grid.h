@@ -145,12 +145,63 @@ void Grid::update(){
 
                 
             }else{
+                //alive cases
+            //totalistic moore neighborhood look up
+            //living 
+            //if 1 or less neighbors are alive then it dies 
+            //2 or 3 then alive cell will live
+
+            //4 or more then cell will die
                 //check left
+                if (x > 0  && the_cells[x-1][y].getState()){
+                    total ++;
+                }
+                //check NW
+                //std::cout << x << "  ----  "<< y << std::endl;
+                if (x > 0 && y > 0 && the_cells[x-1][y-1].getState()){
+                    total ++;
+                }
+                // //check up 
+                if (y > 0 && the_cells[x][y-1].getState()){
+                    total++;
+                }
+                // //check NE
+                if (y >0 && x < width -1 && the_cells[x+1][y-1].getState()){
+                    total++;
+                }
+                if (total > 3){
+                    the_cells[x][y].setState(false);
+                    break;
+                }
+                // //check right
+                if (x < width -1 && the_cells[x+1][y].getState()){
+                    total ++;
+                }
+                // //check SE
+                //logic may be wrong
+                if (y < height-1  && x < width-1 && the_cells[x+1][y+1].getState()){
+                    total ++;
+                }
+                // //check south
+                if (y < height-1 && the_cells[x][y+1].getState()){
+                    total ++;
+                }
+                // //check SW
+                if (y < height -1 && x > 0 && the_cells[x-1][y+1].getState()){
+                    total++;
+
+                }
+                //this if total moore neighbors are equal to 3 then dead cell will live
+                if (total <= 1 || total >= 4){
+                    the_cells[x][y].setState(false);
+
+                }
             }
+            
             //alive cases
             //totalistic moore neighborhood look up
             //living 
-            //if 1 or less neighbors are dead then it dies 
+            //if 1 or less neighbors are alive then it dies 
             //2 or 3 then alive cell will live
             //4 or more then cell will die
 
@@ -308,7 +359,7 @@ void Grid::exec()
         //std::cout << the_grid.size() << std::endl;
     
         window.display();
-        sleep(1);
+        //sleep(1);
     }
 
 }
