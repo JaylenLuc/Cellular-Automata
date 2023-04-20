@@ -8,6 +8,10 @@
 #include <set>
 #include <map>
 #include <iostream>
+//#include <windows.h>
+ 
+// Library effective with Linux
+#include <unistd.h>
 
 
 
@@ -217,12 +221,25 @@ void Grid::pop_grid(const int WIDTH){
         //every vector in the_cells is a col ;
         //the_grid.push_back(v);
         for (unsigned int y = 0 ; y <the_cells[x].size(); y++){
-            
 
+            // float pixel_x = x * Cells::getQUAD_SIZE();
+
+            // float pixel_y = y * Cells::getQUAD_SIZE();
+            // //Vector2 (T X, T Y)
+            // the_cells[x][y].t_left.position = {pixel_x, pixel_y};
+
+            // the_cells[x][y].t_right.position = {pixel_x + WIDTH, pixel_y};
+
+            // the_cells[x][y].b_right.position = {pixel_x + WIDTH, pixel_y + WIDTH};
+             
+            // the_cells[x][y].b_left.position = {pixel_x, pixel_y + WIDTH};
+            
             the_grid.push_back(the_cells[x][y].t_left);
             the_grid.push_back(the_cells[x][y].b_left);
             the_grid.push_back(the_cells[x][y].b_right);
             the_grid.push_back(the_cells[x][y].t_right);
+
+            
             
             //the_cells[x][y].test();
             //std::cout << x<< " "<< y << std::endl;
@@ -232,6 +249,7 @@ void Grid::pop_grid(const int WIDTH){
         }
         
     }
+
 }
 
 void Grid::exec()
@@ -277,17 +295,20 @@ void Grid::exec()
         update();
 
         
-        pop_grid(WIDTH);
         // std::cout << "-"<<std::endl;
         // std::cout << "---"<<std::endl;
 
         //we might also have to update grid data 
-
+        pop_grid(WIDTH);
         //just make stuff  happen on the screen bruh
-
+        //populate(WIDTH);
+        pop_grid(WIDTH);
+        //std::cout << the_grid.size() << std::endl;
         window.draw(the_grid.data(), the_grid.size(), sf::Quads);
+        //std::cout << the_grid.size() << std::endl;
     
         window.display();
+        sleep(1);
     }
 
 }

@@ -63,14 +63,14 @@ int16_t Cells::QUAD_SIZE = 8;
 
 Cells::Cells(sf::Vertex & t_left, sf::Vertex & b_left,sf::Vertex & b_right,sf::Vertex & t_right, int i){
     
-    t_left = t_left;
+    this->t_left = t_left;
 
-    b_left = b_left;
+    this->b_left = b_left;
 
-    b_right = b_right;
+    this->b_right = b_right;
 
-    t_right = t_right;
-    if (i == 0){
+    this->t_right = t_right;
+    if (i == 225){
         current_cell_state = DEAD;
 
     }else{
@@ -91,16 +91,18 @@ void Cells::setState(bool b){
 
     if (b){
         current_cell_state = LIVING;
-        t_left.color = {225,225,225}; 
-        t_right.color = {225,225,225};
-        b_left.color = {225,225,225};
-        b_right.color = {225,225,225};
-    }else{
-        current_cell_state = DEAD;
+        //black
         t_left.color = {0,0,0}; 
         t_right.color = {0,0,0}; 
         b_left.color = {0,0,0}; 
         b_right.color = {0,0,0}; 
+    }else{
+        current_cell_state = DEAD;
+        //white
+        t_left.color = {225,225,225}; 
+        t_right.color = {225,225,225};
+        b_left.color = {225,225,225};
+        b_right.color = {225,225,225};
     }
 }
 
