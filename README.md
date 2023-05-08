@@ -3,6 +3,11 @@ cellular automata with SFML C++
 
 -Conway's Game of Life Rule set with pseudo- random Living Cell initialization state:
 
-![initial](https://user-images.githubusercontent.com/91278747/235723305-977eedd9-391b-4a3c-8521-3d76599ae4ef.gif)
+Tenative results with random seed (% 47)
+![ezgif com-video-to-gif (1)](https://user-images.githubusercontent.com/91278747/236764460-61a8cd77-8478-469a-bb7a-3e724a95b9d8.gif)
+
+![ezgif com-video-to-gif (2)](https://user-images.githubusercontent.com/91278747/236765313-bccc39ba-d858-4675-956c-8780fdf75251.gif)
+
+
 
 ***there will be an exe in the near future including more features involving manipulation of polyominos, flocks of polyominos, defining your own start configuration, choosing different rule sets, and choosing different pattern types
