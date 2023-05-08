@@ -15,4 +15,9 @@ rule 34
 
 
 
-***there will be an exe in the near future including more features involving manipulation of polyominos, flocks of polyominos, defining your own start configuration, choosing different rule sets, and choosing different pattern types
+***there will be an exe in the near future including more features involving manipulation of polyominos, flocks of polyominos, defining your own start configuration, and choosing different pattern types
+
+#Current Deployed Features:
+- Life, Rule 34
+- random start seed
+- player temrinal choice for rule set
