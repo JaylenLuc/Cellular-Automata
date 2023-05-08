@@ -8,12 +8,12 @@
 #include <set>
 #include <map>
 #include <iostream>
+#include <map>
 
 //#include <windows.h>
  
 // Library effective with Linux
 #include <unistd.h>
-
 
 
 class Grid{
@@ -36,13 +36,13 @@ class Grid{
         //iterate over the cell height first
 
         std::vector<std::vector<Cells>> the_cells;
-        static const std::int32_t window_width = 720; //columns
+        static const std::int32_t window_width = 1280; //columns
 
-        static const std::int32_t window_height = 480; //rows
+        static const std::int32_t window_height = 720; //rows
 
         //then for every "height " you iterate through the width so as to avoid a 2D vector 
-        Grid(int Height, int Width);
-        void update();
+        Grid();
+        void conway_update();
         void setWidth(int Width);
 
         void setHeight(int Height);
@@ -51,23 +51,20 @@ class Grid{
 
         void setRun(bool x);
 
-        void exec();
+        void exec(std::string rule);
 
-        void populate(const int WIDTH);
+        void init_populate(const int WIDTH);
 
         void pop_grid(const int WIDTH);
-
+	void three4_update();
 
 
 
 
 };
 sf::RenderWindow window(sf::VideoMode(Grid::window_width, Grid::window_height), "Cellular Automata!");
-Grid::Grid(int Height, int Width){
+Grid::Grid(){
 
-    height = Height;
-
-    width = Width;
 
     is_running = false;
 
@@ -77,7 +74,7 @@ void Grid::setRun(bool x){
     is_running = x;
 }
 
-void Grid::update(){
+void Grid::conway_update(){
 
     //dead
     //exactly 3 lviing then it will live
@@ -117,7 +114,7 @@ void Grid::update(){
                     total++;
                 }
                 if (total > 3){
-                    break;
+                    continue;
                 }
                 // //check right
                 if (x < width -1 && the_cells[x+1][y].getState()){
@@ -146,14 +143,6 @@ void Grid::update(){
 
                 
             }else{
-                //alive cases
-            //totalistic moore neighborhood look up
-            //living 
-            //if 1 or less neighbors are alive then it dies 
-            //2 or 3 then alive cell will live
-
-            //4 or more then cell will die
-                //check left
                 if (x > 0  && the_cells[x-1][y].getState()){
                     total ++;
                 }
@@ -172,7 +161,7 @@ void Grid::update(){
                 }
                 if (total > 3){
                     the_cells[x][y].setState(false);
-                    break;
+                    continue;
                 }
                 // //check right
                 if (x < width -1 && the_cells[x+1][y].getState()){
@@ -193,14 +182,14 @@ void Grid::update(){
 
                 }
                 //this if total moore neighbors are equal to 3 then dead cell will live
-                if (total <= 1 || total >= 4){
+                if (!(total == 2 || total == 3)){
                     the_cells[x][y].setState(false);
 
                 }
             }
             
             //alive cases
-            //totalistic moore neighborhood look up
+            //totalistic moore neighborhood lk up
             //living 
             //if 1 or less neighbors are alive then it dies 
             //2 or 3 then alive cell will live
@@ -210,8 +199,127 @@ void Grid::update(){
     }
 
 }
+void Grid::three4_update(){
+		
+    int total = 0;
+    //iterates every col then every row in the col
+    // std::cout << the_cells.size()<<std::endl;
+    
+    // std::cout << the_cells[0].size() << std::endl;
+    // std::cout << window.getSize().x/Cells::getQUAD_SIZE() << std::endl;
+    // std::cout << window.getSize().y/Cells::getQUAD_SIZE() << std::endl;
 
-void Grid::populate(const int WIDTH){
+    //cols are 90
+    //rows are 60
+    int width = window_width/Cells::getQUAD_SIZE();
+    int height = window_height/Cells::getQUAD_SIZE();
+    for (int x= 0 ; x < width; x++){
+        for (int y = 0 ; y < height; y++){
+            total = 0;
+            //dead cases
+            //false is dead
+	    //3,4
+            if (!the_cells[x][y].getState()){
+                //check left
+                if (x > 0  && the_cells[x-1][y].getState()){
+                    total ++;
+                }
+                //check NW
+                //std::cout << x << "  ----  "<< y << std::endl;
+                if (x > 0 && y > 0 && the_cells[x-1][y-1].getState()){
+                    total ++;
+                }
+                // //check up 
+                if (y > 0 && the_cells[x][y-1].getState()){
+                    total++;
+                }
+		                // //check NE
+                if (y >0 && x < width -1 && the_cells[x+1][y-1].getState()){
+                    total++;
+                }
+                // //check right
+                if (x < width -1 && the_cells[x+1][y].getState()){
+                    total ++;
+                }if (total == 5){
+			continue;
+		}
+
+                // //check SE
+                //logic may be wrong
+                if (y < height-1  && x < width-1 && the_cells[x+1][y+1].getState()){
+                    total ++;
+                }
+                // //check south
+                if (y < height-1 && the_cells[x][y+1].getState()){
+                    total ++;
+                }
+                // //check SW
+                if (y < height -1 && x > 0 && the_cells[x-1][y+1].getState()){
+                    total++;
+
+                }
+                //this if total moore neighbors are equal to 3 then dead cell will live
+                if (total == 3 || total == 4){
+                    the_cells[x][y].setState(true);
+
+                }
+                
+
+                
+            }else{
+		//3,4
+                if (x > 0  && the_cells[x-1][y].getState()){
+                    total ++;
+                }
+                //check NW
+                //std::cout << x << "  ----  "<< y << std::endl;
+                if (x > 0 && y > 0 && the_cells[x-1][y-1].getState()){
+                    total ++;
+                }
+                // //check up 
+                if (y > 0 && the_cells[x][y-1].getState()){
+                    total++;
+                }
+                // //check NE
+                if (y >0 && x < width -1 && the_cells[x+1][y-1].getState()){
+                    total++;
+                }
+                // //check right
+                if (x < width -1 && the_cells[x+1][y].getState()){
+                    total ++;
+                }
+                if (total == 5){
+                    the_cells[x][y].setState(false);
+                    continue;
+                }
+
+                // //check SE
+                //logic may be wrong
+                if (y < height-1  && x < width-1 && the_cells[x+1][y+1].getState()){
+                    total ++;
+                }
+                // //check south
+                if (y < height-1 && the_cells[x][y+1].getState()){
+                    total ++;
+                }
+                // //check SW
+                if (y < height -1 && x > 0 && the_cells[x-1][y+1].getState()){
+                    total++;
+
+                }
+                //this if total moore neighbors are equal to 3 then dead cell will live
+                if (!(total == 4 || total == 3)){
+                    the_cells[x][y].setState(false);
+
+                }
+            }
+
+        }
+    }
+
+}
+
+void Grid::init_populate(const int WIDTH){
     for (unsigned int x = 0; x < window.getSize().x /Cells::getQUAD_SIZE(); x++){
         std::vector<Cells> v;
         //every vector in the_cells is a col ;
@@ -238,7 +346,7 @@ void Grid::populate(const int WIDTH){
             uint8_t r  = rand() % 255;
             //if ()
 
-            if (r % 2 == 0){
+            if (r % 47 == 0){
                 r = 225;
             }else{
                 r = 0;
@@ -304,8 +412,13 @@ void Grid::pop_grid(const int WIDTH){
 
 }
 
-void Grid::exec()
-{
+void Grid::exec(std::string  rule)
+{	
+	std::function<void(void)> rule_func;
+	if (rule == "1") rule_func = std::bind(&Grid::conway_update,this);
+	if (rule == "2") rule_func = std::bind(&Grid::three4_update,this);
+	
+	
     // totalistic cellular automata with a Moore neighborhood
     //less than 2 living cells then the cell will die
     //2 or 3surroudning cells it will live
@@ -323,7 +436,7 @@ void Grid::exec()
     //std::vector<sf::Vertex>> the_grid;
     //for every col for every item in teh col
     //std::cout << window.getSize().x << std::endl;
-    populate(WIDTH);
+    init_populate(WIDTH);
 
 
 
@@ -344,7 +457,9 @@ void Grid::exec()
         //std::cout << "here"<<std::endl;
         
 
-        update();
+       rule_func();
+       //three4_update();
+       //conway_update();
 
         
         // std::cout << "-"<<std::endl;
