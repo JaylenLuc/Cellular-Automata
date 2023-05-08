@@ -1,7 +1,9 @@
 # Cellular-Automata
 
-run 'prog' file to start program
 cellular automata with SFML C++
+
+run 'prog' file to start program
+
 
 -Conway's Game of Life Rule set with pseudo- random Living Cell initialization state:
 
