@@ -346,7 +346,7 @@ void Grid::init_populate(const int WIDTH){
             uint8_t r  = rand() % 255;
             //if ()
 
-            if (r % 47 == 0){
+            if (r % 31 == 0){
                 r = 225;
             }else{
                 r = 0;
@@ -414,6 +414,8 @@ void Grid::pop_grid(const int WIDTH){
 
 void Grid::exec(std::string  rule)
 {	
+	//implement random seed with different numbers for each rule
+	//IMPLEMENTATION: use public member varibale and assign it with rule string, and use it in init_pop, we can do the same with color variable r in init_pop with another class attribute  
 	std::function<void(void)> rule_func;
 	if (rule == "1") rule_func = std::bind(&Grid::conway_update,this);
 	if (rule == "2") rule_func = std::bind(&Grid::three4_update,this);
@@ -451,7 +453,7 @@ void Grid::exec(std::string  rule)
             if (event.type == sf::Event::Closed){
                 window.close();
 
-            }
+           }
         }
 
         //std::cout << "here"<<std::endl;
@@ -469,7 +471,6 @@ void Grid::exec(std::string  rule)
         pop_grid(WIDTH);
         //just make stuff  happen on the screen bruh
         //populate(WIDTH);
-        pop_grid(WIDTH);
         //std::cout << the_grid.size() << std::endl;
         window.draw(the_grid.data(), the_grid.size(), sf::Quads);
  
