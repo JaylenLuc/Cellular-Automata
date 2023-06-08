@@ -14,6 +14,8 @@ int main()
 	//to a predetermiuned set of rules
 	//2 -- could allow users to change color of alive and dead cells
 	std::string rule_set ;
+	std::cout << "Press Escape to exit simulation "<<std::endl;
+
 	std::cout << "Select corresponding code to choose a rule set: "<<std::endl;
 	std::cout << "1 : Conway's game of life (B3/S23; totalistic moore)"<<std::endl;
 	std::cout << "2 : Rule 34 (B34/S34); totalistic moore)"<<std::endl;
